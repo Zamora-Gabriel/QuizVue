@@ -6,7 +6,9 @@
  * @Contributor: Clinton Ramonida
  */
 
+
 /* DEFAULTS */
+
 * {
     margin: 0;
     padding: 0;
@@ -25,7 +27,7 @@ input[type=button] {
     font-size: 17px;
     margin: 3px;
     padding: 3px 8px;
-    border: 1px solid black; 
+    border: 1px solid black;
 }
 
 input[type=button]:hover {
@@ -33,32 +35,33 @@ input[type=button]:hover {
 }
 
 input[type=button]:focus {
-    background-color: #D10034;
+    background-color: cadetblue;
     border: 1px solid black;
 }
 
+
 /* GRID FRAME/CONTAINER (PARENT) */
+
 .grid-frame {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-auto-rows: auto;
-    grid-template-areas: 
-    "headbar headbar headbar headbar headbar headbar headbar headbar headbar headbar" 
-    "sidecontent thecontent thecontent thecontent thecontent thecontent thecontent thecontent thecontent thecontent"
-    "footcontent footcontent footcontent footcontent footcontent footcontent footcontent footcontent footcontent footcontent" ;
+    grid-template-areas: "headbar headbar headbar headbar headbar headbar headbar headbar headbar headbar" "sidecontent thecontent thecontent thecontent thecontent thecontent thecontent thecontent thecontent thecontent" "footcontent footcontent footcontent footcontent footcontent footcontent footcontent footcontent footcontent footcontent";
     justify-items: start;
 }
 
+
 /* GRID AREAS/ITEMS (CHILDREN) */
+
 .area {
-    /* border: 2px solid black; */ 
+    /* border: 2px solid black; */
 }
 
 .grid-header {
     grid-area: headbar;
     z-index: 1000;
     width: 100vw;
-    height: 120px; 
+    height: 120px;
 }
 
 .grid-nav {
@@ -83,7 +86,9 @@ input[type=button]:focus {
     height: 100px;
 }
 
+
 /* GRID CONTAINER CHILD (CHILD BUT A CONTAINER) */
+
 .grid-frame-child {
     display: grid;
     background: #FFFFFF;
@@ -93,45 +98,50 @@ input[type=button]:focus {
     width: 100%;
 }
 
+
 /* GRID AREA FOR "GRID CONTAINER CHILD" */
-.area-child{
-    /* border: 2px solid black; */ 
+
+.area-child {
+    /* border: 2px solid black; */
 }
 
-.grid-intro{
+.grid-intro {
     grid-column: 2/9;
     grid-row: 2/3;
 }
 
-.grid-filter{
+.grid-filter {
     grid-column: 9/15;
     grid-row: 2/3;
     text-align: end;
 }
 
-.grid-tile{
+.grid-tile {
     grid-column: 2/15;
     grid-row: 3/15;
 }
 
 
 /* FLEX CONTAINER (PARENT) */
+
 .flexbox {
     display: flex;
     background-color: rgb(241, 244, 247);
     height: 100%;
 }
 
+
 /* FLEX ITEMS (CHILDREN) */
-.flexitem{
+
+.flexitem {
     align-self: center;
 }
 
 
-
 /* header */
+
 .header {
-    background: #D10034; 
+    background: cadetblue;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -139,8 +149,8 @@ input[type=button]:focus {
 }
 
 .logo {
-    background-image:url("../assets/vfs_logo.png");
-    background-size:100% 100%;
+    background-image: url("../assets/vfs_logo.png");
+    background-size: 100% 100%;
     height: 54px;
     width: 165px;
     margin-left: 3em;
@@ -151,7 +161,7 @@ input[type=button]:focus {
     font-family: 'Raleway', Arial, Helvetica, sans-serif;
 }
 
-.search-bar{
+.search-bar {
     color: white;
     margin-right: 5em;
     margin-top: 5em;
@@ -161,24 +171,26 @@ input[type=button]:focus {
 
 
 /* sidebar */
+
 .sidebar {
     flex-direction: column;
-    background: #4c4c4c; 
+    background: #4c4c4c;
     box-shadow: inset -1px 0 2px 1px #222;
 }
 
-.side-item{
+.side-item {
     margin-top: 2em;
     padding: 1em;
 }
 
 
 /* navigation bar */
-.menu{
+
+.menu {
     background: rgba(0, 0, 0, 0);
 }
 
-.navbar{
+.navbar {
     margin-top: 2em;
     width: 100%;
     height: 100%;
@@ -193,17 +205,17 @@ ul {
 }
 
 li {
-    background: #D10034; 
+    background: cadetblue;
     float: left;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 li:hover {
     background-color: #111;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 5px 5px rgba(0,0,0,0.22);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.22);
 }
 
 li a {
@@ -216,6 +228,7 @@ li a {
 
 
 /* content */
+
 .content {
     flex-direction: row;
     flex-wrap: wrap;
@@ -224,38 +237,41 @@ li a {
     justify-content: space-evenly;
     background: #FFFFFF;
 }
+
 .content-intro {
-    font-weight:bold; 
+    font-weight: bold;
 }
 
+
 /* content tile cards style */
-.tile{
-    background: #D10034; 
+
+.tile {
+    background: #D10034;
     width: 350px;
     height: 315px;
     margin: 15px;
     /* border: 1px solid #4c4c4c;  */
-    border-radius: 2px; 
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 2px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
-.tile:hover{
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+.tile:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.card-frame-link{
+.card-frame-link {
     position: relative;
 }
 
-.card-frame-link:hover .card-overlay-link{
+.card-frame-link:hover .card-overlay-link {
     opacity: 1;
     background: hsla(50, 0%, 0%, 0.6);
-    transition: 0.3s opacity ease-out; 
+    transition: 0.3s opacity ease-out;
     cursor: pointer;
 }
 
-.card-overlay-link{
+.card-overlay-link {
     display: flex;
     position: absolute;
     z-index: 1000;
@@ -280,13 +296,13 @@ li a {
     height: 60px;
 }
 
-.card-title h3{
+.card-title h3 {
     text-align: center;
     align-self: center;
     padding-top: 1em;
 }
 
-.card-thumb  {
+.card-thumb {
     max-width: 320px;
     max-height: 230px;
     background-size: cover;
@@ -302,12 +318,13 @@ li a {
     overflow: hidden;
 }
 
-.card-author h4{
+.card-author h4 {
     text-align: center;
 }
 
 
 /* footer */
+
 .footer {
     flex-direction: column;
     justify-content: center;
@@ -316,20 +333,20 @@ li a {
 }
 
 
-
 /* Button Styles */
+
 .buttons {
     justify-content: center;
     align-items: center;
 }
 
-.btn{
+.btn {
     background-color: white;
     color: black;
     height: 40px;
     width: 80px;
     margin: 2px;
-    border: 2px solid black; 
+    border: 2px solid black;
 }
 
 .btn:hover {
@@ -338,8 +355,8 @@ li a {
 }
 
 
-
 /* Heading Styles */
+
 h1 {
     color: white;
 }
@@ -350,57 +367,73 @@ h2 {
     margin: 3px 0px 3px 0px;
 }
 
-h3{ 
+h3 {
     color: white;
     font-family: 'Raleway', Helvetica, sans-serif;
 }
 
-h4{
+h4 {
     color: white;
     font-family: 'Raleway', Helvetica, sans-serif;
 }
-
 
 
 /* Vue components Styles */
-.vue-main-rootcomponent{
-    /* border: 2px solid black; */ 
+
+.vue-main-rootcomponent {
+    /* border: 2px solid black; */
 }
 
-.vue-component{
-    /* border: 2px solid black;  */ 
+.vue-component {
+    /* border: 2px solid black;  */
 }
 
-.vue-sub-component{
-    /* border: 2px solid black; */ 
+.vue-sub-component {
+    /* border: 2px solid black; */
 }
- 
 
 
 /* vue transition animations */
+
+
 /* style: name="fade" */
-.fade-enter-active, .fade-leave-active {
+
+.fade-enter-active,
+.fade-leave-active {
     transition: opacity 1.0s;
 }
-.fade-enter, .fade-leave-to{
+
+.fade-enter,
+.fade-leave-to {
     opacity: 0;
 }
 
+
 /* style: name="slide-fade" */
+
+
 /* Enter and leave animations can use different */
+
+
 /* durations and timing functions.              */
+
 .slide-fade-enter-active {
     transition: all .3s ease;
 }
+
 .slide-fade-leave-active {
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+
+.slide-fade-enter,
+.slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */
+
+{
     transform: translateX(10px);
     opacity: 0;
 }
 
 .default_thumbnail {
-    background-image: url( "../assets/default_thumbnail.png" );
+    background-image: url("../assets/default_thumbnail.png");
 }

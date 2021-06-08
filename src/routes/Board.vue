@@ -1,7 +1,7 @@
 <template>
   <section class="player-container">
     <!--Board Screen-->
-    <div class="board-home">
+    <div v-if="showBoard" class="board-home">
       <div class="question-container">
         <div class="question-col">
           <h2>Category 1: Reptiles</h2>
@@ -36,11 +36,11 @@
     </div>
 
     <!--Stand by screen-->
-    <div class="board-question">
+    <div v-if="showQuestions" class="board-question">
       <center>
         Question:
         <div id="question-ph">
-          Which reptile is mostly known because it camuflages?
+          {{ theQuestion }}
         </div>
         <br />
         <h2>Type your answer in your player screen</h2>
@@ -58,33 +58,24 @@ import controller from "@/mixins/controller.js";
 class BoardController extends controller {
   constructor(name, subComponentList = []) {
     super(name, subComponentList);
-    this.vm = {};
+    this.vm = {
+      showBoard: true,
+      showQuestions: false,
+    };
     this.props = {
       name: String,
     };
 
-    this.methods = {
-      goToQuestion() {
-        let boardHome = document.querySelector(".board-home");
-        boardHome.style.display = "none";
-
-        let boardQuestion = document.querySelector(".board-question");
-        boardQuestion.style.display = "block";
-      },
-      returnToBoard() {
-        let boardHome = document.querySelector(".board-question");
-        boardHome.style.display = "none";
-
-        let boardQuestion = document.querySelector(".board-home");
-        boardQuestion.style.display = "block";
-      },
-    };
+    this.injectGetters([`theQuestion`]);
   }
 
-  onMounted() {
-    // Hide all screens but the login one
-    let boardQuestion = document.querySelector(".board-question");
-    boardQuestion.style.display = "none";
+  goToQuestion() {
+    this.showQuestions = true;
+    this.showBoard = false;
+  }
+  returnToBoard() {
+    this.showBoard = true;
+    this.showQuestions = false;
   }
 }
 

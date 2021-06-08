@@ -1,7 +1,7 @@
 <template>
   <section class="host-container">
     <!--Login Screen-->
-    <div class="host-home" id="host-login">
+    <div v-if="showHome" class="host-home" id="host-login">
       <center>
         <h1>Welcome {{ name }}</h1>
         <br />
@@ -13,18 +13,25 @@
         </select>
         <br />
         <br />
-        <button v-on:click="hideGS()" id="buttonPH">Start session</button>
+        <button v-on:click="hideHostHome()" id="buttonPH">Start session</button>
       </center>
     </div>
 
     <!--Session Screen-->
-    <div class="host-session">
+    <div v-if="showSession" class="host-session">
       <center><h1>Game Session</h1></center>
       <div class="session-container">
         <div class="players-col">
-          <div class="player-pholder" id="player1">Player 1: Richard</div>
-          <div class="player-pholder" id="player2">Player 2: Sonia</div>
-          <div class="player-pholder" id="player3">Player 3: Alice</div>
+          <div class="player-pholder" id="player1">
+            Player 1: {{ thePlayerList[0] }}
+          </div>
+          <div class="player-pholder" id="player2">
+            Player 2: Sonia<!--{{thePlayerList[1]}}-->
+          </div>
+          <div class="player-pholder" id="player3">
+            Player 3: Alice
+            <!-- {{thePlayerList[2]}}-->
+          </div>
         </div>
         <div class="players-col">
           <div class="player-pholder" id="player4">Player 4: Jean</div>
@@ -38,41 +45,41 @@
     </div>
 
     <!--Questions Screen-->
-    <div class="host-questions">
+    <div v-if="showQuestions" class="host-questions">
       <center><h1>Select a Question to reveal</h1></center>
       <div class="question-container">
         <div class="question-col">
           <h2>Category 1: Reptiles</h2>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(1, 1)"
             class="question-pholder"
             id="quest1"
           >
             100
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(2, 1)"
             class="question-pholder"
             id="quest2"
           >
             200
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(3, 1)"
             class="question-pholder"
             id="quest3"
           >
             300
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(4, 1)"
             class="question-pholder"
             id="quest4"
           >
             400
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(5, 1)"
             class="question-pholder"
             id="quest5"
           >
@@ -82,35 +89,35 @@
         <div class="question-col">
           <h2>Category 2: Mammals</h2>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(1, 2)"
             class="question-pholder"
             id="quest6"
           >
             100
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(2, 2)"
             class="question-pholder"
             id="quest7"
           >
             200
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(3, 2)"
             class="question-pholder"
             id="quest8"
           >
             300
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(4, 2)"
             class="question-pholder"
             id="quest9"
           >
             400
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(5, 2)"
             class="question-pholder"
             id="quest10"
           >
@@ -120,35 +127,35 @@
         <div class="question-col">
           <h2>Category 3: Birds</h2>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(1, 3)"
             class="question-pholder"
             id="quest11"
           >
             100
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(2, 3)"
             class="question-pholder"
             id="quest12"
           >
             200
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(3, 3)"
             class="question-pholder"
             id="quest13"
           >
             300
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(4, 3)"
             class="question-pholder"
             id="quest14"
           >
             400
           </button>
           <button
-            v-on:click="hideQuest(1)"
+            v-on:click="hideQuest(5, 3)"
             class="question-pholder"
             id="quest15"
           >
@@ -160,18 +167,18 @@
     </div>
 
     <!--Resolve player's answers Screen-->
-    <div class="host-answers">
+    <div v-if="showAnswer" class="host-answers">
       <center>
         <div id="revealed-question">
-          Question: Which reptile is mostly known because it camuflages?
+          {{ theQuestion }}
         </div>
       </center>
       <div class="answers-container">
         <!--Answers given by the players-->
         <div class="players-col">
           <div class="answer-placeholder">
-            <div class="player-name">1st: Richard</div>
-            <span class="player-pholder">Answer: Lizard</span>
+            <div class="player-name">1st: {{ theUserAns[0] }}</div>
+            <span class="player-pholder">Answer: {{ theAnswerList[0] }}</span>
             <button class="answer-bttn correct" id="corr-1">Correct</button>
             <button class="answer-bttn incorrect" id="incorr-1">
               Incorrect
@@ -232,51 +239,44 @@ import controller from "@/mixins/controller.js";
 class HostLogController extends controller {
   constructor(name, subComponentList = []) {
     super(name, subComponentList);
-    this.vm = {};
+    this.vm = {
+      showHome: true,
+      showSession: false,
+      showQuestions: false,
+      showAnswer: false,
+    };
     this.props = {
       name: String,
     };
 
-    this.methods = {
-      hideGS() {
-        let hostSes = document.querySelector(".host-session");
-        hostSes.style.display = `block`;
-        let hostLog = document.querySelector(".host-home");
-        hostLog.style.display = "none";
-      },
-      hideHostSes() {
-        let hostSes = document.querySelector(".host-session");
-        hostSes.style.display = `none`;
-        let hostQuestion = document.querySelector(".host-questions");
-        hostQuestion.style.display = "block";
-      },
-      hideQuest(question) {
-        let hostAns = document.querySelector(".host-answers");
-        hostAns.style.display = "block";
+    this.injectGetters([
+      `theQuestion`,
+      "thePlayerList",
+      "theAnswerList",
+      "theUserAns",
+    ]);
 
-        let hostQuestion = document.querySelector(".host-questions");
-        hostQuestion.style.display = "none";
-      },
-      hideAns() {
-        let hostAns = document.querySelector(".host-answers");
-        hostAns.style.display = "none";
-
-        let hostQuestion = document.querySelector(".host-questions");
-        hostQuestion.style.display = "block";
-      },
-    };
+    this.injectActions([`setQuestionNumber`, `setQuestion`]);
   }
 
-  onMounted() {
-    // Hide all screens but the login one
-    let hostSes = document.querySelector(".host-session");
-    hostSes.style.display = "none";
-
-    let hostQuestion = document.querySelector(".host-questions");
-    hostQuestion.style.display = "none";
-
-    let hostAns = document.querySelector(".host-answers");
-    hostAns.style.display = "none";
+  hideHostHome() {
+    this.showHome = false;
+    this.showSession = true;
+  }
+  hideHostSes() {
+    this.showSession = false;
+    this.showQuestions = true;
+  }
+  hideQuest(questNum, questionType) {
+    this.showQuestions = false;
+    this.showAnswer = true;
+    let val = [questNum, questionType];
+    this.setQuestionNumber(questNum);
+    this.setQuestion(val);
+  }
+  hideAns() {
+    this.showAnswer = false;
+    this.showQuestions = true;
   }
 }
 

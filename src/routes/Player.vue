@@ -1,25 +1,25 @@
 <template>
   <section class="player-container">
-    <div class="player-home">
+    <div v-if="showHome" class="player-home">
       <center>
         <h1>Welcome {{ name }}</h1>
         <br />
         <h1>Please Type Your Nickname</h1>
         <br />
         <br />
-        <form>
+        <form @submit.prevent="submitText()">
           <input type="text" id="nick-ph" name="nickname-area" />
           <br />
           <br />
-          <a href="#" v-on:click="submit()">Submit</a>
+          <input type="submit" value="join" />
         </form>
       </center>
     </div>
 
     <!--Stand by screen-->
-    <div class="player-standby">
+    <div v-if="showStandby" class="player-standby">
       <center>
-        <div id="player-nickname"></div>
+        <div id="player-nickname">Welcome {{ theUser }}</div>
         <br />
         <h1>Score:</h1>
         <span id="score-val">0</span>
@@ -31,20 +31,18 @@
     </div>
 
     <!--Submitting answers-->
-    <div class="player-answers">
+    <div v-if="showAnswers" class="player-answers">
       <center>
-        <div id="revealed-question">
-          Question: Which reptile is mostly known because it camuflages?
-        </div>
+        <div id="revealed-question">Question: {{ theQuestion }}</div>
         <br />
         <h1>Please Type Your Answer</h1>
         <br />
         <br />
-        <form>
+        <form @submit.prevent="submitAns()">
           <input type="text" id="answer-ph" name="answer-area" />
           <br />
           <br />
-          <a href="#" v-on:click="submitAns()">Submit</a>
+          <input type="submit" value="Submit" />
         </form>
       </center>
     </div>
@@ -57,65 +55,74 @@ import controller from "@/mixins/controller.js";
 class PlayerController extends controller {
   constructor(name, subComponentList = []) {
     super(name, subComponentList);
-    this.vm = {};
+    this.vm = {
+      showHome: true,
+      showStandby: false,
+      showAnswers: false,
+    };
     this.props = {
       name: String,
     };
 
-    this.methods = {
-      submit() {
-        let text = document.querySelector("#nick-ph").value;
+    this.injectGetters([
+      `theUser`,
+      `thePlayerList`,
+      `theAnswer`,
+      `theUserAns`,
+      `theAnswerList`,
+      `theQuestion`,
+    ]);
 
-        if (text == "" || text == " ") {
-          alert("Please type a nickname");
-          return;
-        }
+    this.injectActions([
+      `setUser`,
+      `addPlayer`,
+      `setAnswer`,
+      `addAnswer`,
+      `addUserAnswer`,
+    ]);
+  }
+  submitText() {
+    let text = document.querySelector("#nick-ph").value;
 
-        alert(`Nickname is: ${text}`);
+    if (text == "" || text == " ") {
+      alert("Please type a nickname");
+      return;
+    }
 
-        let newNick = document.querySelector("#player-nickname");
-        let nickname = document.createTextNode(`Welcome ${text}`);
-        newNick.appendChild(nickname);
+    this.setUser(text);
+    this.addPlayer(text);
 
-        let playHome = document.querySelector(".player-home");
-        playHome.style.display = "none";
+    this.showHome = false;
+    this.showStandby = true;
 
-        let playStand = document.querySelector(".player-standby");
-        playStand.style.display = "block";
-      },
-      goToAnswer() {
-        let playStand = document.querySelector(".player-standby");
-        playStand.style.display = "none";
-
-        let playAns = document.querySelector(".player-answers");
-        playAns.style.display = "block";
-      },
-      submitAns() {
-        let text = document.querySelector("#answer-ph").value;
-
-        if (text == "" || text == " ") {
-          alert("Please type an answer");
-          return;
-        }
-
-        alert(`Answer is: ${text}`);
-
-        let playAns = document.querySelector(".player-answers");
-        playAns.style.display = "none";
-
-        let playStand = document.querySelector(".player-standby");
-        playStand.style.display = "block";
-      },
-    };
+    alert(`Nickname is: ${this.theUser}`);
   }
 
-  onMounted() {
-    // Hide all screens but the login one
-    let playStand = document.querySelector(".player-standby");
-    playStand.style.display = "none";
+  goToAnswer() {
+    this.showStandby = false;
+    this.showAnswers = true;
+  }
 
-    let playAns = document.querySelector(".player-answers");
-    playAns.style.display = "none";
+  submitAns() {
+    let text = document.querySelector("#answer-ph").value;
+
+    if (text == "" || text == " ") {
+      alert("Please type an answer");
+      return;
+    }
+
+    this.setAnswer(text);
+    this.addUserAnswer(this.theUser);
+    this.addAnswer(text);
+
+    alert(
+      `Answer is: ${this.theAnswer} \n User: ${
+        this.theUserAns[this.theUserAns.length - 1]
+      }`
+    );
+
+    this.showStandby = true;
+    this.showAnswers = false;
   }
 }
 

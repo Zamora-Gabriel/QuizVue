@@ -185,7 +185,7 @@ input[type="button"]:focus {
 
 /* header */
 .header {
-  background: #d10034;
+  background: cadetblue;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

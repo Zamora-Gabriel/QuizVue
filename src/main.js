@@ -18,12 +18,12 @@ import App from '@/App.vue'
 
 class MainApp {
 
-    constructor () {
+    constructor() {
         new Vue({
             router,
             store,
             components: { App },
-            render: h => h( App ),
+            render: h => h(App),
         }).$mount('#app');
     }
 

@@ -2,58 +2,57 @@
  *   Copyright (c) 2019 Kibble Online, in cooperation with Vancouver Film School
  *   All rights reserved.
  */
-import Store from '../store.js'
-import Router from '../router.js'
+import Store from '@/store.js'
+import Router from '@/router.js'
+
+import { mapActions, mapGetters } from 'vuex'
 
 export default class Controller {
 
-    constructor( name = 'component-name', componentList = [] ) {
+    constructor(name = 'component-name', componentList = []) {
         this.name = name;
         this.vm = {};
-        this.data = () => { return {...this.vm }};
+        this.data = () => { return this.vm };
         this.props = {};
-        this.components = { ...componentList };
-        this.computed = {/* ...mapGetters('account', ['status']) */ }
-        this.methods =  {/*...mapActions('account', ['login', 'logout']),*/ };
+        this.components = {...componentList };
+        this.computed = { /* ...mapGetters('account', ['status']) */ }
+        this.methods = { /*...mapActions('account', ['login', 'logout']),*/ };
 
-        this.pascalCase = str => str.replace( /(\w)(\w*)/g, (g0,g1,g2) => { return g1.toUpperCase() + g2.toLowerCase() });
-
-        this._extractMethods(['compute_', 'compute','on_', 'on', 'vue_', 'vue', 'get_', 'get']);
+        this.pascalCase = str => str.replace(/(\w)(\w*)/g, (g0, g1, g2) => { return g1.toUpperCase() + g2.toLowerCase() });
+        this._extractMethods(['compute_', 'compute', 'on_', 'on', 'vue_', 'vue', 'get_', 'get']);
     }
 
-    _extractMethods( prefixList ) {
+    injectActions(actionMap) { Object.assign(this.methods, mapActions(actionMap)) }
+    injectGetters(gettersMap) { Object.assign(this.computed, mapGetters(gettersMap)) }
+
+    _extractMethods(prefixList) {
 
         // Private helper
-        let _strip = ( str, prefix ) => str.replace( new RegExp(`^${prefix}`), '');
+        let _strip = (str, prefix) => str.replace(new RegExp(`^${prefix}`), '');
 
         // This extracts the methods from the child object
-        let localMethods = Object.getPrototypeOf( this );
+        let localMethods = Object.getPrototypeOf(this);
         delete localMethods.constructor;
 
-        let methodNameList = Object.getOwnPropertyNames( localMethods );
+        let methodNameList = Object.getOwnPropertyNames(localMethods);
         for (let methodName of methodNameList) {
 
             // all methods by default are added to methods
-            this.methods[ methodName ] = localMethods[ methodName ]
+            this.methods[methodName] = localMethods[methodName]
             for (let prefix of prefixList) {
 
-                if (methodName.startsWith( prefix )) {
+                if (methodName.startsWith(prefix)) {
 
-                    delete this.methods[ methodName ];
-                    let newName = _strip( methodName, prefix );
-                    newName = newName.charAt(0).toLowerCase() + newName.slice(1);
+                    delete this.methods[methodName];
+                    let newName = _strip(methodName, prefix);
                     switch (prefix) {
+
                         case "compute_":
-                        case "compute":
-                        case "get_":
-                        case "get":
-                            this.computed[ newName ] = localMethods[ methodName ];
+                        case "on_":
+                            this.computed[newName] = localMethods[methodName];
                             break;
 
-                        case "on_":
-                        case "on":
                         case "vue_":
-                        case "vue":
                             // Add hooks here...
                             /*
                             this.beforeCreate()
@@ -68,7 +67,7 @@ export default class Controller {
                             this.beforeDestroy()
                             this.destroyed()
                             */
-                            this[ newName ] = localMethods[ methodName ];
+                            this[newName] = localMethods[methodName];
                             break;
 
                         default:
@@ -78,7 +77,6 @@ export default class Controller {
             }
         }
     }
-
 }
 /*
  * License
@@ -100,6 +98,3 @@ export default class Controller {
  *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *   SOFTWARE.
  */
-
-
-
