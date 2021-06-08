@@ -20,11 +20,19 @@ export default ({
 
         ADD_USER_ANSWER: (state, newUserAns) => {
             state.userAnsList.push(newUserAns);
+        },
+
+        CLEAR_ANSWERS: (state) => {
+            state.userAnsList.pop()
+            state.answerList.pop()
         }
     },
     actions: {
         setAnswer({ commit }, aAnswer) {
             commit(`SET_CURRENT_ANSWER`, aAnswer)
+        },
+        clearAnswers({ commit }) {
+            commit(`CLEAR_ANSWERS`)
         },
         addUserAnswer({ commit }, newUserAns) {
             commit(`ADD_USER_ANSWER`, newUserAns)

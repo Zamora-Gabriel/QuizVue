@@ -22,7 +22,7 @@
         <div id="player-nickname">Welcome {{ theUser }}</div>
         <br />
         <h1>Score:</h1>
-        <span id="score-val">0</span>
+        <span id="score-val">{{ theScore }}</span>
         <br />
         <button v-on:click="goToAnswer()" id="standby-bttn">
           Debug: Go to answer screen
@@ -71,6 +71,7 @@ class PlayerController extends controller {
       `theUserAns`,
       `theAnswerList`,
       `theQuestion`,
+      "theScore",
     ]);
 
     this.injectActions([

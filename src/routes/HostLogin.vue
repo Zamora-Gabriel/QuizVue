@@ -179,8 +179,18 @@
           <div class="answer-placeholder">
             <div class="player-name">1st: {{ theUserAns[0] }}</div>
             <span class="player-pholder">Answer: {{ theAnswerList[0] }}</span>
-            <button class="answer-bttn correct" id="corr-1">Correct</button>
-            <button class="answer-bttn incorrect" id="incorr-1">
+            <button
+              @click="addScore(100)"
+              class="answer-bttn correct"
+              id="corr-1"
+            >
+              Correct
+            </button>
+            <button
+              @click="addScore(-100)"
+              class="answer-bttn incorrect"
+              id="incorr-1"
+            >
               Incorrect
             </button>
           </div>
@@ -251,12 +261,19 @@ class HostLogController extends controller {
 
     this.injectGetters([
       `theQuestion`,
+      `theValue`,
       "thePlayerList",
       "theAnswerList",
       "theUserAns",
+      "theScore",
     ]);
 
-    this.injectActions([`setQuestionNumber`, `setQuestion`]);
+    this.injectActions([
+      `setQuestionNumber`,
+      `setQuestion`,
+      `setScore`,
+      `clearAnswers`,
+    ]);
   }
 
   hideHostHome() {
@@ -277,6 +294,11 @@ class HostLogController extends controller {
   hideAns() {
     this.showAnswer = false;
     this.showQuestions = true;
+
+    this.clearAnswers();
+  }
+  addScore(scorePoints) {
+    this.setScore(this.theScore + scorePoints * this.theValue);
   }
 }
 
