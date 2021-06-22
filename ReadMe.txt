@@ -22,7 +22,7 @@ a board needs to be displayed for users to see.
 # Download/Install
 ---------------------------------------
 
-Browse to demo link and download the zip or download it from:
+Browse to demo link and download the zip from the Assignment 2 branch or download it from:
 
 [Download Zip](https://github.com/Zamora-Gabriel/QuizVue/archive/refs/heads/Assignment2.zip)
 

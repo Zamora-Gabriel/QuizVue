@@ -12,9 +12,8 @@ Copyright (c) 2018. Scott Henshaw, Kibble Online Inc. All Rights Reserved.
         <h2>Welcome to {{ name }}</h2>
         <form @submit.prevent="startGame()">
           <label style="color: black">Role: </label>
-          <br />
           <select name="roles" id="role-select">
-            <!--Placeholder-->
+            <!--Role selector-->
             <option
               v-for="(roles, index) in roleNames"
               :key="roles"
@@ -23,6 +22,8 @@ Copyright (c) 2018. Scott Henshaw, Kibble Online Inc. All Rights Reserved.
               {{ roles }}
             </option>
           </select>
+          <br />
+          <br />
           <br />
           <input type="submit" value="Start" />
         </form>
@@ -55,6 +56,8 @@ export default new HomeController("pgHome");
 <style scoped>
 h2 {
   color: black;
+  padding: 2vh;
+  font-size: 6vh;
 }
 /* Local styles for this template */
 .home-container {
@@ -65,6 +68,9 @@ h2 {
   margin: 2vw;
   border: 1px solid black;
   background-color: lightgray;
+  background-image: url("https://i.ytimg.com/vi/1w-rLKb5Cc8/maxresdefault.jpg");
+  background-repeat: no-repeat;
+  background-size: 80vw 78vh;
   color: black;
   height: 78vh;
   width: 80vw;

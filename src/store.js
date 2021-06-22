@@ -4,6 +4,7 @@ import user from "@/store/Users.js"
 import answer from "@/store/Answer.js"
 import question from "@/store/Question.js"
 import score from "@/store/Score.js"
+import flags from "@/store/Flags.js"
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         user,
         answer,
         question,
-        score
+        score,
+        flags
     }
 })

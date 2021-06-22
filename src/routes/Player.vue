@@ -17,21 +17,18 @@
     </div>
 
     <!--Stand by screen-->
-    <div v-if="showStandby" class="player-standby">
+    <div v-if="showStandby && !questionFlagCheck" class="player-standby">
       <center>
         <div id="player-nickname">Welcome {{ theUser }}</div>
         <br />
         <h1>Score:</h1>
         <span id="score-val">{{ theScore }}</span>
         <br />
-        <button v-on:click="goToAnswer()" id="standby-bttn">
-          Debug: Go to answer screen
-        </button>
       </center>
     </div>
 
     <!--Submitting answers-->
-    <div v-if="showAnswers" class="player-answers">
+    <div v-if="questionFlagCheck" class="player-answers">
       <center>
         <div id="revealed-question">Question: {{ theQuestion }}</div>
         <br />
@@ -72,6 +69,7 @@ class PlayerController extends controller {
       `theAnswerList`,
       `theQuestion`,
       "theScore",
+      "questionFlagCheck",
     ]);
 
     this.injectActions([
@@ -80,6 +78,7 @@ class PlayerController extends controller {
       `setAnswer`,
       `addAnswer`,
       `addUserAnswer`,
+      `setPlayerAdded`,
     ]);
   }
   submitText() {
@@ -97,11 +96,8 @@ class PlayerController extends controller {
     this.showStandby = true;
 
     alert(`Nickname is: ${this.theUser}`);
-  }
 
-  goToAnswer() {
-    this.showStandby = false;
-    this.showAnswers = true;
+    this.setPlayerAdded(true);
   }
 
   submitAns() {
@@ -121,9 +117,6 @@ class PlayerController extends controller {
         this.theUserAns[this.theUserAns.length - 1]
       }`
     );
-
-    this.showStandby = true;
-    this.showAnswers = false;
   }
 }
 
@@ -146,7 +139,12 @@ header {
   margin: 2vw;
   border: 1px solid black;
   background-color: lightgray;
-  color: black;
+
+  background-image: url("https://t3.ftcdn.net/jpg/02/42/46/98/360_F_242469806_Fxz3wrk48vTvQsbQxd5IMClGNhKZBkeH.jpg");
+  background-repeat: no-repeat;
+  background-size: 80vw 78vh;
+
+  color: white;
   height: 78vh;
   width: 80vw;
 }
@@ -163,7 +161,7 @@ header {
 
 h1 {
   font-size: 2vw;
-  color: black;
+  color: white;
 }
 
 select,

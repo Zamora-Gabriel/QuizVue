@@ -8,8 +8,7 @@
         <h1>Please Select a Game to Play</h1>
         <select name="games" id="game-select">
           <!--Placeholder-->
-          <option value="animals">Animals</option>
-          <option value="movies">Movies</option>
+          <option value="animals">{{ theTheme }}</option>
         </select>
         <br />
         <br />
@@ -49,7 +48,7 @@
       <center><h1>Select a Question to reveal</h1></center>
       <div class="question-container">
         <div class="question-col">
-          <h2>Category 1: Reptiles</h2>
+          <h2>Category 1:</h2>
           <button
             v-on:click="hideQuest(1, 1)"
             class="question-pholder"
@@ -87,7 +86,7 @@
           </button>
         </div>
         <div class="question-col">
-          <h2>Category 2: Mammals</h2>
+          <h2>Category 2:</h2>
           <button
             v-on:click="hideQuest(1, 2)"
             class="question-pholder"
@@ -125,7 +124,7 @@
           </button>
         </div>
         <div class="question-col">
-          <h2>Category 3: Birds</h2>
+          <h2>Category 3:</h2>
           <button
             v-on:click="hideQuest(1, 3)"
             class="question-pholder"
@@ -175,66 +174,68 @@
       </center>
       <div class="answers-container">
         <!--Answers given by the players-->
-        <div class="players-col">
-          <div class="answer-placeholder">
-            <div class="player-name">1st: {{ theUserAns[0] }}</div>
-            <span class="player-pholder">Answer: {{ theAnswerList[0] }}</span>
-            <button
-              @click="addScore(100)"
-              class="answer-bttn correct"
-              id="corr-1"
-            >
-              Correct
-            </button>
-            <button
-              @click="addScore(-100)"
-              class="answer-bttn incorrect"
-              id="incorr-1"
-            >
-              Incorrect
-            </button>
+        <center>
+          <div class="players-col">
+            <div class="answer-placeholder">
+              <div class="player-name">1st: {{ theUserAns[0] }}</div>
+              <span class="player-pholder">Answer: {{ theAnswerList[0] }}</span>
+              <button
+                @click="addScore(100)"
+                class="answer-bttn correct"
+                id="corr-1"
+              >
+                Correct
+              </button>
+              <button
+                @click="addScore(-100)"
+                class="answer-bttn incorrect"
+                id="incorr-1"
+              >
+                Incorrect
+              </button>
+            </div>
+            <div class="answer-placeholder">
+              <div class="player-name">2nd: Sonia</div>
+              <span class="player-pholder">Answer: Monitor Lizard</span>
+              <button class="answer-bttn correct" id="corr-2">Correct</button>
+              <button class="answer-bttn incorrect" id="incorr-2">
+                Incorrect
+              </button>
+            </div>
+            <div class="answer-placeholder">
+              <div class="player-name">3rd: Alice</div>
+              <span class="player-pholder">Answer: Chameleon</span>
+              <button class="answer-bttn correct" id="corr-3">Correct</button>
+              <button class="answer-bttn incorrect" id="incorr-3">
+                Incorrect
+              </button>
+            </div>
+            <div class="answer-placeholder">
+              <div class="player-name">4th: Jean</div>
+              <span class="player-pholder">Answer: Crocodile</span>
+              <button class="answer-bttn correct" id="corr-4">Correct</button>
+              <button class="answer-bttn incorrect" id="incorr-4">
+                Incorrect
+              </button>
+            </div>
+            <div class="answer-placeholder">
+              <div class="player-name">5th: Robert</div>
+              <span class="player-pholder">Answer: Gecko</span>
+              <button class="answer-bttn correct" id="corr-5">Correct</button>
+              <button class="answer-bttn incorrect" id="incorr-5">
+                Incorrect
+              </button>
+            </div>
+            <div class="answer-placeholder">
+              <div class="player-name">6th: George</div>
+              <span class="player-pholder">Answer: Komodo Dragon</span>
+              <button class="answer-bttn correct" id="corr-6">Correct</button>
+              <button class="answer-bttn incorrect" id="incorr-6">
+                Incorrect
+              </button>
+            </div>
           </div>
-          <div class="answer-placeholder">
-            <div class="player-name">2nd: Sonia</div>
-            <span class="player-pholder">Answer: Monitor Lizard</span>
-            <button class="answer-bttn correct" id="corr-2">Correct</button>
-            <button class="answer-bttn incorrect" id="incorr-2">
-              Incorrect
-            </button>
-          </div>
-          <div class="answer-placeholder">
-            <div class="player-name">3rd: Alice</div>
-            <span class="player-pholder">Answer: Chameleon</span>
-            <button class="answer-bttn correct" id="corr-3">Correct</button>
-            <button class="answer-bttn incorrect" id="incorr-3">
-              Incorrect
-            </button>
-          </div>
-          <div class="answer-placeholder">
-            <div class="player-name">4th: Jean</div>
-            <span class="player-pholder">Answer: Crocodile</span>
-            <button class="answer-bttn correct" id="corr-4">Correct</button>
-            <button class="answer-bttn incorrect" id="incorr-4">
-              Incorrect
-            </button>
-          </div>
-          <div class="answer-placeholder">
-            <div class="player-name">5th: Robert</div>
-            <span class="player-pholder">Answer: Gecko</span>
-            <button class="answer-bttn correct" id="corr-5">Correct</button>
-            <button class="answer-bttn incorrect" id="incorr-5">
-              Incorrect
-            </button>
-          </div>
-          <div class="answer-placeholder">
-            <div class="player-name">6th: George</div>
-            <span class="player-pholder">Answer: Komodo Dragon</span>
-            <button class="answer-bttn correct" id="corr-6">Correct</button>
-            <button class="answer-bttn incorrect" id="incorr-6">
-              Incorrect
-            </button>
-          </div>
-        </div>
+        </center>
       </div>
       <center>
         <button v-on:click="hideAns()" id="button-ses">Return</button>
@@ -266,6 +267,8 @@ class HostLogController extends controller {
       "theAnswerList",
       "theUserAns",
       "theScore",
+      "playerAdded",
+      "theTheme",
     ]);
 
     this.injectActions([
@@ -273,6 +276,7 @@ class HostLogController extends controller {
       `setQuestion`,
       `setScore`,
       `clearAnswers`,
+      `setQuestionFlag`,
     ]);
   }
 
@@ -281,8 +285,13 @@ class HostLogController extends controller {
     this.showSession = true;
   }
   hideHostSes() {
-    this.showSession = false;
-    this.showQuestions = true;
+    if (this.playerAdded) {
+      this.showSession = false;
+      this.showQuestions = true;
+      return;
+    }
+
+    alert("Not all players have joined");
   }
   hideQuest(questNum, questionType) {
     this.showQuestions = false;
@@ -290,11 +299,14 @@ class HostLogController extends controller {
     let val = [questNum, questionType];
     this.setQuestionNumber(questNum);
     this.setQuestion(val);
+
+    this.setQuestionFlag(true);
   }
   hideAns() {
     this.showAnswer = false;
     this.showQuestions = true;
 
+    this.setQuestionFlag(false);
     this.clearAnswers();
   }
   addScore(scorePoints) {
@@ -326,6 +338,11 @@ h2 {
   margin: 2vw;
   border: 1px solid black;
   background-color: lightgray;
+
+  background-image: url("https://i.ytimg.com/vi/1w-rLKb5Cc8/maxresdefault.jpg");
+  background-repeat: no-repeat;
+  background-size: 80vw 78vh;
+
   color: black;
   height: 78vh;
   width: 80vw;
@@ -342,7 +359,7 @@ h2 {
 }
 
 h1 {
-  font-size: 4vw;
+  font-size: 3.5vw;
   color: black;
 }
 

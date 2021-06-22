@@ -29,7 +29,6 @@ class HeaderController extends Controller {
 
   goHome(event) {
     // do some router magic here to actualy change the URL
-    console.log("Going home now!");
     location.href = "./index.html";
   }
 }

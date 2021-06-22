@@ -29,10 +29,11 @@ class NavbarController extends Controller {
     this.vm = {
       navMenu: [
         { section: "Home" },
-        { section: "About" },
+        //{ section: "About" },
         { section: "Host" },
         { section: "Player" },
         { section: "Board" },
+        { section: "Editor" },
       ],
     };
   }

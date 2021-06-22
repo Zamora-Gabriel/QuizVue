@@ -1,7 +1,7 @@
 <template>
   <section class="player-container">
     <!--Board Screen-->
-    <div v-if="showBoard" class="board-home">
+    <div v-if="!questionFlagCheck" class="board-home">
       <div class="question-container">
         <div class="question-col">
           <h2>Category 1: Reptiles</h2>
@@ -36,7 +36,7 @@
     </div>
 
     <!--Stand by screen-->
-    <div v-if="showQuestions" class="board-question">
+    <div v-if="questionFlagCheck" class="board-question">
       <center>
         Question:
         <div id="question-ph">
@@ -66,7 +66,7 @@ class BoardController extends controller {
       name: String,
     };
 
-    this.injectGetters([`theQuestion`]);
+    this.injectGetters([`theQuestion`, `questionFlagCheck`]);
   }
 
   goToQuestion() {
@@ -91,7 +91,7 @@ header {
 }
 
 h2 {
-  color: black;
+  color: white;
 }
 /* Local styles for this template */
 .player-container {
@@ -102,7 +102,12 @@ h2 {
   margin: 2vw;
   border: 1px solid black;
   background-color: lightgray;
-  color: black;
+
+  background-image: url("https://ak.picdn.net/shutterstock/videos/1063950523/thumb/4.jpg?ip=x480");
+  background-repeat: no-repeat;
+  background-size: 80vw 78vh;
+
+  color: white;
   height: 78vh;
   width: 80vw;
 }

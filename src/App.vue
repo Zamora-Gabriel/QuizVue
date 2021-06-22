@@ -216,7 +216,7 @@ input[type="button"]:focus {
 /* sidebar */
 .sidebar {
   flex-direction: column;
-  background: #4c4c4c;
+  background: hsl(194, 90%, 24%);
   box-shadow: inset -1px 0 2px 1px #222;
 }
 
