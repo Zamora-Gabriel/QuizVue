@@ -29,8 +29,8 @@
         </div>
       </div>
       <center>
-        <button v-on:click="goToQuestion()" id="standby-bttn">
-          Debug: Go to question screen
+        <button v-on:click="refreshFlag()" id="button-ses">
+          Refresh question flag
         </button>
       </center>
     </div>
@@ -44,8 +44,8 @@
         </div>
         <br />
         <h2>Type your answer in your player screen</h2>
-        <button v-on:click="returnToBoard()" id="standby-bttn">
-          Debug: Go to board screen
+        <button v-on:click="refreshFlag()" id="button-ses">
+          Refresh question flag
         </button>
       </center>
     </div>
@@ -67,6 +67,11 @@ class BoardController extends controller {
     };
 
     this.injectGetters([`theQuestion`, `questionFlagCheck`]);
+    this.injectActions([`getQuestionFlag`]);
+  }
+
+  refreshFlag() {
+    this.getQuestionFlag();
   }
 
   goToQuestion() {

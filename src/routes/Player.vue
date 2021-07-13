@@ -24,6 +24,9 @@
         <h1>Score:</h1>
         <span id="score-val">{{ theScore }}</span>
         <br />
+        <button v-on:click="refreshFlag()" id="button-ses">
+          Refresh question
+        </button>
       </center>
     </div>
 
@@ -41,6 +44,9 @@
           <br />
           <input type="submit" value="Submit" />
         </form>
+        <button v-on:click="refreshFlag()" id="button-ses">
+          Refresh question flag
+        </button>
       </center>
     </div>
   </section>
@@ -79,6 +85,9 @@ class PlayerController extends controller {
       `addAnswer`,
       `addUserAnswer`,
       `setPlayerAdded`,
+      `connectUser`,
+      `loadPlayerList`,
+      `getQuestionFlag`,
     ]);
   }
   submitText() {
@@ -89,15 +98,22 @@ class PlayerController extends controller {
       return;
     }
 
-    this.setUser(text);
-    this.addPlayer(text);
+    //this.setUser(text);
+    //this.addPlayer(text);
+
+    // Send post to server
+    this.connectUser(text);
+
+    //this.loadPlayerList();
 
     this.showHome = false;
     this.showStandby = true;
 
-    alert(`Nickname is: ${this.theUser}`);
-
     this.setPlayerAdded(true);
+  }
+
+  refreshFlag() {
+    this.getQuestionFlag();
   }
 
   submitAns() {

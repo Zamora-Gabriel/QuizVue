@@ -39,6 +39,9 @@
         </div>
       </div>
       <center>
+        <button v-on:click="refreshPlayers()" id="button-ses">
+          Refresh Player List
+        </button>
         <button v-on:click="hideHostSes()" id="button-ses">Start Game</button>
       </center>
     </div>
@@ -277,6 +280,9 @@ class HostLogController extends controller {
       `setScore`,
       `clearAnswers`,
       `setQuestionFlag`,
+      `setPlayerAdded`,
+      `getUser`,
+      `connectQuestionFlag`,
     ]);
   }
 
@@ -284,6 +290,16 @@ class HostLogController extends controller {
     this.showHome = false;
     this.showSession = true;
   }
+
+  refreshPlayers() {
+    // Refresh the page to get the user in server
+    this.getUser();
+    if (this.thePlayerList.length == 0) {
+      return;
+    }
+    this.setPlayerAdded(true);
+  }
+
   hideHostSes() {
     if (this.playerAdded) {
       this.showSession = false;
@@ -300,7 +316,8 @@ class HostLogController extends controller {
     this.setQuestionNumber(questNum);
     this.setQuestion(val);
 
-    this.setQuestionFlag(true);
+    //this.setQuestionFlag(true);
+    this.connectQuestionFlag(true);
   }
   hideAns() {
     this.showAnswer = false;
@@ -308,6 +325,9 @@ class HostLogController extends controller {
 
     this.setQuestionFlag(false);
     this.clearAnswers();
+
+    // unset server question flag
+    this.connectQuestionFlag(false);
   }
   addScore(scorePoints) {
     this.setScore(this.theScore + scorePoints * this.theValue);

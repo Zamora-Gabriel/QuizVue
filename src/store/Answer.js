@@ -3,6 +3,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -28,6 +29,13 @@ export default ({
         }
     },
     actions: {
+        connect({ commit }) {
+            // Axios.get('/api/player/connect')
+            // Axios.post('api/player/connect', userData)
+            //           .then( response=> response.data )
+            //           .then( data=> commit('USER_CONNECTED', data.payload))
+            //           .catch( error => console.log(error))
+        },
         setAnswer({ commit }, aAnswer) {
             commit(`SET_CURRENT_ANSWER`, aAnswer)
         },
