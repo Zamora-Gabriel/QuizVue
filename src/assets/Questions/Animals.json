@@ -1,0 +1,23 @@
+{
+    "theme": {
+        "name": "Animals"
+    },
+
+    "Questions": {
+        "quest1": "Which reptile is mostly known because it camuflages?",
+        "quest2": "Which is the biggest mammal on earth?",
+        "quest3": "Which bird has the largest wingspan?",
+        "quest4": "Where do tortoises lay their eggs?",
+        "quest5": "What is the only mammal capable of true flight?",
+        "quest6": "How many species of birds are there?",
+        "quest7": "Which feature is visibly different in crocodiles and alligators?",
+        "quest8": "What is the smallest mammal in the world?",
+        "quest9": "What color are the american robin's eggs?",
+        "quest10": "With what part of their body do lizards smell?",
+        "quest11": "Which rodent can go its whole life without drinking any water?",
+        "quest12": "What is a group of owls called?",
+        "quest13": "Which is the most dangerous reptile in the world?",
+        "quest14": "What is the gestation period of a blue whale?",
+        "quest15": "What bird has the longest lifespan?"
+    }
+}

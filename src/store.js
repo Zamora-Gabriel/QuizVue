@@ -10,25 +10,24 @@ import Axios from 'axios'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-/*const fbConfig = {
+const fbConfig = {
     apiKey: "AIzaSyD17-h8yp2ViXaf16qS0iESYff7dkqAWWA",
     authDomain: "gameshow-87080.firebaseapp.com",
     databaseURL: "https://gameshow-87080.firebaseio.com",
     projectId: "gameshow-87080",
 }
 
-const fb = firebase.initializeApp(fbConfig)
-
-const db = {
-    firestore: fb.firestore(),
-    //storage: fb.storage()
-}*/
+const db = firebase.initializeApp(fbConfig).firestore();
 
 Vue.use(Vuex, Axios)
 
 Axios.defaults.baseURL = 'http://localhost:3000'
 
 export default new Vuex.Store({
+    state: {
+        db,
+        ax: "hi",
+    },
     modules: {
         user,
         answer,

@@ -17,12 +17,12 @@
     </div>
 
     <!--Stand by screen-->
-    <div v-if="showStandby && !questionFlagCheck" class="player-standby">
+    <div v-if="showStandby && !theFlags.changeScreens" class="player-standby">
       <center>
-        <div id="player-nickname">Welcome {{ theUser }}</div>
+        <div id="player-nickname">Welcome {{ theUser.nickname }}</div>
         <br />
         <h1>Score:</h1>
-        <span id="score-val">{{ theScore }}</span>
+        <span id="score-val">{{ theUser.score }}</span>
         <br />
         <button v-on:click="refreshFlag()" id="button-ses">
           Refresh question
@@ -31,9 +31,11 @@
     </div>
 
     <!--Submitting answers-->
-    <div v-if="questionFlagCheck" class="player-answers">
+    <div v-if="theFlags.changeScreens" class="player-answers">
       <center>
-        <div id="revealed-question">Question: {{ theQuestion }}</div>
+        <div id="revealed-question">
+          Question: {{ theInformation.question }}
+        </div>
         <br />
         <h1>Please Type Your Answer</h1>
         <br />
@@ -76,18 +78,25 @@ class PlayerController extends controller {
       `theQuestion`,
       "theScore",
       "questionFlagCheck",
+      "theFlags",
+      "theInformation",
     ]);
 
     this.injectActions([
-      `setUser`,
       `addPlayer`,
       `setAnswer`,
       `addAnswer`,
       `addUserAnswer`,
       `setPlayerAdded`,
       `connectUser`,
+      `connectUserCloud`,
       `loadPlayerList`,
       `getQuestionFlag`,
+      `bindUser`,
+      `getDB`,
+      `bindFlagsData`,
+      `bindCurrentInformation`,
+      `bindQuestions`,
     ]);
   }
   submitText() {
@@ -98,18 +107,21 @@ class PlayerController extends controller {
       return;
     }
 
-    //this.setUser(text);
-    //this.addPlayer(text);
+    // Send player's nickname to cloud and bind it
+    this.addPlayer(text).then((myDoc) => {
+      this.bindUser();
+      this.bindCurrentInformation().then((obj) => this.bindQuestions());
+
+      // Change from login to standby screen
+      this.showHome = false;
+      this.showStandby = true;
+
+      // Bind the flags to check for updates
+      this.bindFlagsData();
+    });
 
     // Send post to server
-    this.connectUser(text);
-
-    //this.loadPlayerList();
-
-    this.showHome = false;
-    this.showStandby = true;
-
-    this.setPlayerAdded(true);
+    // this.connectUser(text);
   }
 
   refreshFlag() {
@@ -124,10 +136,16 @@ class PlayerController extends controller {
       return;
     }
 
+    // Set the answer
     this.setAnswer(text);
+
+    // Set the user that submitted the answer
     this.addUserAnswer(this.theUser);
+
+    // Add the answer to store
     this.addAnswer(text);
 
+    // Debug confirmation for answer
     alert(
       `Answer is: ${this.theAnswer} \n User: ${
         this.theUserAns[this.theUserAns.length - 1]

@@ -8,11 +8,12 @@
         <h1>Please Select a Game to Play</h1>
         <select name="games" id="game-select">
           <!--Placeholder-->
-          <option value="animals">{{ theTheme }}</option>
+          <option value="animals">Click on refresh button</option>
         </select>
         <br />
         <br />
         <button v-on:click="hideHostHome()" id="buttonPH">Start session</button>
+        <button v-on:click="refreshHome()" id="buttonPH">Refresh themes</button>
       </center>
     </div>
 
@@ -22,20 +23,25 @@
       <div class="session-container">
         <div class="players-col">
           <div class="player-pholder" id="player1">
-            Player 1: {{ thePlayerList[0] }}
+            Player 1: {{ thePlayerList[0].nickname }}
           </div>
           <div class="player-pholder" id="player2">
-            Player 2: Sonia<!--{{thePlayerList[1]}}-->
+            Player 2: {{ thePlayerList[1].nickname }}
           </div>
           <div class="player-pholder" id="player3">
-            Player 3: Alice
-            <!-- {{thePlayerList[2]}}-->
+            Player 3: {{ thePlayerList[2].nickname }}
           </div>
         </div>
         <div class="players-col">
-          <div class="player-pholder" id="player4">Player 4: Jean</div>
-          <div class="player-pholder" id="player5">Player 5: Robert</div>
-          <div class="player-pholder" id="player6">Player 6: George</div>
+          <div class="player-pholder" id="player4">
+            Player 4: {{ thePlayerList[3].nickname }}
+          </div>
+          <div class="player-pholder" id="player5">
+            Player 5: {{ thePlayerList[4].nickname }}
+          </div>
+          <div class="player-pholder" id="player6">
+            Player 6: {{ thePlayerList[5].nickname }}
+          </div>
         </div>
       </div>
       <center>
@@ -172,7 +178,7 @@
     <div v-if="showAnswer" class="host-answers">
       <center>
         <div id="revealed-question">
-          {{ theQuestion }}
+          {{ theInformation.question }}
         </div>
       </center>
       <div class="answers-container">
@@ -271,7 +277,8 @@ class HostLogController extends controller {
       "theUserAns",
       "theScore",
       "playerAdded",
-      "theTheme",
+      "theInformation",
+      "theThemeArr",
     ]);
 
     this.injectActions([
@@ -283,25 +290,89 @@ class HostLogController extends controller {
       `setPlayerAdded`,
       `getUser`,
       `connectQuestionFlag`,
+      `bindPlayerData`,
+      `resetPlayers`,
+      `bindFlagsData`,
+      `bindThemeData`,
+      `setTheme`,
+      `bindCurrentInformation`,
+      `bindQuestions`,
     ]);
   }
 
   hideHostHome() {
-    this.showHome = false;
-    this.showSession = true;
+    this.bindPlayerData().then((obj) => {
+      // get select element
+      let el = document.querySelector("#game-select");
+
+      // get selected option from the select element
+      let text = el.options[el.selectedIndex].text;
+
+      // check if the selected option was not an updated one
+      if (text == "Click on refresh button") {
+        alert(
+          "Please refresh the games' list by clicking on the refresh button"
+        );
+        return;
+      }
+
+      // Show the session page to see logged players
+      this.showHome = false;
+      this.showSession = true;
+
+      // bind the data from flags and theme in database
+      this.bindFlagsData();
+      this.setTheme(text).then((obj) => {
+        this.bindCurrentInformation().then((obj) => this.bindQuestions());
+      });
+    });
+  }
+
+  refreshHome() {
+    // get reference to select element
+    let sel = document.querySelector("#game-select");
+    let length = sel.options.length;
+
+    // remove previous options
+    let i = 0;
+    for (i = length - 1; i >= 0; i--) {
+      sel.remove(i);
+    }
+
+    this.bindThemeData().then((obj) => {
+      this.theThemeArr.forEach((doc) => {
+        let tempPlayer = doc.id;
+
+        // create new option
+        let opt = document.createElement("option");
+
+        // Append text from the theme id in database to the previously created option
+        opt.appendChild(document.createTextNode(`${tempPlayer}`));
+
+        // set value property of the option
+        opt.value = `${tempPlayer}`;
+
+        // append option to the select element
+        sel.appendChild(opt);
+      });
+    });
   }
 
   refreshPlayers() {
-    // Refresh the page to get the user in server
-    this.getUser();
-    if (this.thePlayerList.length == 0) {
-      return;
-    }
-    this.setPlayerAdded(true);
+    // Reset players
+    this.resetPlayers();
   }
 
   hideHostSes() {
-    if (this.playerAdded) {
+    let allPlayersLogged = true;
+
+    this.thePlayerList.forEach((doc) => {
+      if (!doc.playerLogged) {
+        allPlayersLogged = false;
+      }
+    });
+
+    if (allPlayersLogged) {
       this.showSession = false;
       this.showQuestions = true;
       return;
@@ -309,6 +380,7 @@ class HostLogController extends controller {
 
     alert("Not all players have joined");
   }
+
   hideQuest(questNum, questionType) {
     this.showQuestions = false;
     this.showAnswer = true;
@@ -316,8 +388,9 @@ class HostLogController extends controller {
     this.setQuestionNumber(questNum);
     this.setQuestion(val);
 
-    //this.setQuestionFlag(true);
-    this.connectQuestionFlag(true);
+    this.setQuestionFlag(true);
+
+    //this.connectQuestionFlag(true);
   }
   hideAns() {
     this.showAnswer = false;
@@ -327,7 +400,7 @@ class HostLogController extends controller {
     this.clearAnswers();
 
     // unset server question flag
-    this.connectQuestionFlag(false);
+    //this.connectQuestionFlag(false);
   }
   addScore(scorePoints) {
     this.setScore(this.theScore + scorePoints * this.theValue);

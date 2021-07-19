@@ -1,7 +1,7 @@
 <template>
   <section class="player-container">
     <!--Board Screen-->
-    <div v-if="!questionFlagCheck" class="board-home">
+    <div v-if="!theFlags.changeScreens" class="board-home">
       <div class="question-container">
         <div class="question-col">
           <h2>Category 1: Reptiles</h2>
@@ -30,17 +30,17 @@
       </div>
       <center>
         <button v-on:click="refreshFlag()" id="button-ses">
-          Refresh question flag
+          Bind question flag
         </button>
       </center>
     </div>
 
     <!--Stand by screen-->
-    <div v-if="questionFlagCheck" class="board-question">
+    <div v-if="theFlags.changeScreens" class="board-question">
       <center>
         Question:
         <div id="question-ph">
-          {{ theQuestion }}
+          {{ theInformation.question }}
         </div>
         <br />
         <h2>Type your answer in your player screen</h2>
@@ -66,12 +66,26 @@ class BoardController extends controller {
       name: String,
     };
 
-    this.injectGetters([`theQuestion`, `questionFlagCheck`]);
-    this.injectActions([`getQuestionFlag`]);
+    this.injectGetters([
+      `theQuestion`,
+      `questionFlagCheck`,
+      `theFlags`,
+      `theInformation`,
+    ]);
+    this.injectActions([
+      `getQuestionFlag`,
+      `bindFlagsData`,
+      `bindCurrentInformation`,
+      `bindQuestions`,
+    ]);
   }
 
   refreshFlag() {
-    this.getQuestionFlag();
+    // Bind the flags to check for updates
+    this.bindFlagsData();
+
+    // bind information from database and questions
+    this.bindCurrentInformation().then((obj) => this.bindQuestions());
   }
 
   goToQuestion() {

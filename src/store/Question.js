@@ -4,13 +4,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import { firestorePlugin } from 'vuefire'
+
 Vue.use(Vuex)
 
 export default ({
     state: {
         question: "none",
         value: 1,
-        theme: "Animals",
+        info: "Animals",
         questArr: [
             "Animals",
             "Which reptile is mostly known because it camuflages?",
@@ -28,7 +33,9 @@ export default ({
             "Which is the most dangerous reptile in the world?",
             "What is the gestation period of a blue whale?",
             "What bird has the longest lifespan?"
-        ]
+        ],
+        themeArr: {},
+        questionsObj: {},
     },
     mutations: {
         SET_QUESTION_NUMBER: (state, aNumber) => {
@@ -41,99 +48,96 @@ export default ({
                 case (1):
                     // Column 1
                     if (val[1] == 1) {
-                        console.log(state.questArr[1])
-                        state.question = state.questArr[1]
+                        state.question = state.questionsObj.quest1;
                     }
                     // Column2
                     if (val[1] == 2) {
-
-                        state.question = state.questArr[2]
+                        state.question = state.questionsObj.quest2;
                     }
                     // Column3
                     if (val[1] == 3) {
-
-                        state.question = state.questArr[3]
+                        state.question = state.questionsObj.quest3;
                     }
                     break;
                     // second question
                 case (2):
                     // Column1
                     if (val[1] == 1) {
-
-                        state.question = state.questArr[4]
+                        state.question = state.questionsObj.quest4;
                     }
                     // Column2
                     if (val[1] == 2) {
-
-                        state.question = state.questArr[5]
+                        state.question = state.questionsObj.quest5;
                     }
                     // Column3
                     if (val[1] === 3) {
 
-                        state.question = state.questArr[6]
+                        state.question = state.questionsObj.quest6;
                     }
                     break;
                     // third question
                 case (3):
                     // Column1
                     if (val[1] === 1) {
-
-                        state.question = state.questArr[7]
+                        state.question = state.questionsObj.quest7;
                     }
                     // Column2
                     if (val[1] === 2) {
 
-                        state.question = state.questArr[8]
+                        state.question = state.questionsObj.quest8;
                     }
                     // Column3
                     if (val[1] === 3) {
-
-                        state.question = state.questArr[9]
+                        state.question = state.questionsObj.quest9;
                     }
                     break;
                     // fourth question
                 case (4):
                     // Column1
                     if (val[1] === 1) {
-
-                        state.question = state.questArr[10]
+                        state.question = state.questionsObj.quest10;
                     }
                     // Column2
                     if (val[1] === 2) {
-
-                        state.question = state.questArr[11]
+                        state.question = state.questionsObj.quest11;
                     }
                     // Column3
                     if (val[1] === 3) {
-
-                        state.question = state.questArr[12]
+                        state.question = state.questionsObj.quest12;
                     }
                     break;
                     // fifth question
                 default:
                     // Column1
                     if (val[1] === 1) {
-
-                        state.question = state.questArr[13]
+                        state.question = state.questionsObj.quest13;
                     }
                     // Column2
                     if (val[1] === 2) {
-
-                        state.question = state.questArr[14]
+                        state.question = state.questionsObj.quest14;
                     }
                     // Column3
                     if (val[1] === 3) {
-
-                        state.question = state.questArr[15]
+                        state.question = state.questionsObj.quest15;
                     }
                     break;
             }
-        },
 
-        SET_CURRENT_THEME: (state, aTheme) => {
-            state.theme = aTheme
-        },
+            return new Promise((resolve, reject) => {
+                // get the rootstate's database information and from firebase grab gameInfo Collection
+                val[2].db.collection('gameInfo')
+                    .doc('information')
+                    .update({ question: state.question })
+                    .then(() => {
+                        // Debug message, question was updated on cloud
+                        console.log('question updated!')
 
+                        // resolve the promise
+                        resolve();
+                    })
+                    .catch(error => reject(error));
+            });
+        },
         SET_CURRENT_QUESTARRAY: (state, questArray) => {
             let i = 0;
             questArray.forEach(element => {
@@ -148,21 +152,48 @@ export default ({
         setQuestionNumber({ commit }, aNumber) {
             commit(`SET_QUESTION_NUMBER`, aNumber)
         },
-        setQuestion({ commit }, val) {
-
+        setQuestion({ state, commit, rootState }, val) {
+            val[2] = rootState;
             commit(`SET_CURRENT_QUESTION`, val)
         },
-        setTheme({ commit }, aTheme) {
-            commit(`SET_CURRENT_THEME`, aTheme)
+        setTheme({ state, commit, rootState }, aTheme) {
+            return new Promise((resolve, reject) => {
+                // rootstate to get the database from root store
+                rootState.db.collection('gameInfo')
+                    .doc('information')
+                    .update({ theme: aTheme })
+                    .then(() => {
+                        // Debug message, theme was updated on cloud
+                        console.log('theme updated!')
+
+                        // resolve the promise
+                        resolve();
+                    })
+                    .catch(error => reject(error));
+            });
         },
         setQuestArr({ commit }, questArray) {
             commit(`SET_CURRENT_QUESTARRAY`, questArray)
-        }
+        },
+
+        bindThemeData: firestoreAction(context => {
+            return context.bindFirestoreRef('themeArr', context.rootState.db.collection('games'))
+        }),
+
+        bindQuestions: firestoreAction(context => {
+            let docID = context.getters.theInformation.theme;
+            return context.bindFirestoreRef('questionsObj', context.rootState.db.collection('games').doc(docID))
+        }),
+
+        bindCurrentInformation: firestoreAction(context => {
+            return context.bindFirestoreRef('info', context.rootState.db.collection('gameInfo').doc("information"))
+        }),
     },
     getters: {
         theQuestion: state => state.question,
         theValue: state => state.value,
         theQuestArr: state => state.questArr,
-        theTheme: state => state.theme
+        theInformation: state => state.info,
+        theThemeArr: state => state.themeArr
     }
 })
