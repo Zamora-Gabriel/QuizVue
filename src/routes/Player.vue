@@ -136,21 +136,10 @@ class PlayerController extends controller {
       return;
     }
 
+    let answerBundle = [text, this.theUser.nickname];
+
     // Set the answer
-    this.setAnswer(text);
-
-    // Set the user that submitted the answer
-    this.addUserAnswer(this.theUser);
-
-    // Add the answer to store
-    this.addAnswer(text);
-
-    // Debug confirmation for answer
-    alert(
-      `Answer is: ${this.theAnswer} \n User: ${
-        this.theUserAns[this.theUserAns.length - 1]
-      }`
-    );
+    this.setAnswer(answerBundle);
   }
 }
 

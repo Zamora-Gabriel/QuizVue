@@ -5,6 +5,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
 
+
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import { firestorePlugin } from 'vuefire'
+
 Vue.use(Vuex)
 
 export default ({
@@ -29,25 +35,66 @@ export default ({
         }
     },
     actions: {
-        connect({ commit }) {
-            // Axios.get('/api/player/connect')
-            // Axios.post('api/player/connect', userData)
-            //           .then( response=> response.data )
-            //           .then( data=> commit('USER_CONNECTED', data.payload))
-            //           .catch( error => console.log(error))
+        setAnswer({ state, commit, rootState }, aAnswer) {
+            return new Promise((resolve, reject) => {
+                let playerCollection = rootState.db.collection("players");
+
+                // Get all missing players
+                let query = playerCollection.where("nickname", "==", aAnswer[1]); // TODO: replace 1
+
+                // fetch all
+                query.get()
+                    .then(resultList => {
+                        // Get the first document with no player logged in
+                        rootState.db.collection('players')
+                            .doc(resultList.docs[0].id)
+                            .update({ answer: aAnswer[0] })
+                            .then(() => {
+                                // Debug message, user was updated on cloud
+                                console.log('answer updated!')
+                            })
+                        resolve();
+                    })
+                    .catch(error => reject(error));
+            });
         },
-        setAnswer({ commit }, aAnswer) {
-            commit(`SET_CURRENT_ANSWER`, aAnswer)
+        clearAnswers({ state, commit, rootState }) {
+            return new Promise((resolve, reject) => {
+                // rootstate to get the database from root store
+                let playerCollection = rootState.db.collection("players");
+
+                // Get all players
+                let query = playerCollection.where("playerLogged", "==", true);
+
+                // fetch all
+                query.get()
+                    .then(resultList => {
+                        // Get all documents and reset their logged flags
+                        resultList.docs.forEach(doc => {
+                            rootState.db.collection('players')
+                                .doc(doc.id)
+                                .update({ answer: "" })
+                                .then(() => {
+                                    // Debug message, users were updated on cloud
+                                    console.log('user answers resetted!')
+                                })
+                        })
+
+                        // resolve the promise
+                        resolve();
+                    })
+                    .catch(error => reject(error));
+            });
         },
-        clearAnswers({ commit }) {
-            commit(`CLEAR_ANSWERS`)
-        },
-        addUserAnswer({ commit }, newUserAns) {
+        addUserAnswer({ state, commit, rootState }, newUserAns) {
             commit(`ADD_USER_ANSWER`, newUserAns)
         },
-        addAnswer({ commit }, newAns) {
+        addAnswer({ state, commit, rootState }, newAns) {
             commit(`ADD_ANSWER`, newAns)
-        }
+        },
+        bindAnswerData: firestoreAction(context => {
+            return context.bindFirestoreRef('answerList', context.rootState.db.collection('answers').doc('playerAns'))
+        }),
     },
     getters: {
         theAnswer: state => state.answer,

@@ -186,17 +186,21 @@
         <center>
           <div class="players-col">
             <div class="answer-placeholder">
-              <div class="player-name">1st: {{ theUserAns[0] }}</div>
-              <span class="player-pholder">Answer: {{ theAnswerList[0] }}</span>
+              <div class="player-name">
+                1st: {{ thePlayerList[0].nickname }}
+              </div>
+              <span class="player-pholder"
+                >Answer: {{ thePlayerList[0].answer }}</span
+              >
               <button
-                @click="addScore(100)"
+                @click="addScore(100, 0)"
                 class="answer-bttn correct"
                 id="corr-1"
               >
                 Correct
               </button>
               <button
-                @click="addScore(-100)"
+                @click="addScore(-100, 0)"
                 class="answer-bttn incorrect"
                 id="incorr-1"
               >
@@ -204,42 +208,110 @@
               </button>
             </div>
             <div class="answer-placeholder">
-              <div class="player-name">2nd: Sonia</div>
-              <span class="player-pholder">Answer: Monitor Lizard</span>
-              <button class="answer-bttn correct" id="corr-2">Correct</button>
-              <button class="answer-bttn incorrect" id="incorr-2">
+              <div class="player-name">
+                2nd: {{ thePlayerList[1].nickname }}
+              </div>
+              <span class="player-pholder"
+                >Answer: {{ thePlayerList[1].answer }}</span
+              >
+              <button
+                @click="addScore(100, 1)"
+                class="answer-bttn correct"
+                id="corr-2"
+              >
+                Correct
+              </button>
+              <button
+                @click="addScore(-100, 1)"
+                class="answer-bttn incorrect"
+                id="incorr-2"
+              >
                 Incorrect
               </button>
             </div>
             <div class="answer-placeholder">
-              <div class="player-name">3rd: Alice</div>
-              <span class="player-pholder">Answer: Chameleon</span>
-              <button class="answer-bttn correct" id="corr-3">Correct</button>
-              <button class="answer-bttn incorrect" id="incorr-3">
+              <div class="player-name">
+                3rd: {{ thePlayerList[2].nickname }}
+              </div>
+              <span class="player-pholder"
+                >Answer: {{ thePlayerList[2].answer }}</span
+              >
+              <button
+                @click="addScore(100, 2)"
+                class="answer-bttn correct"
+                id="corr-3"
+              >
+                Correct
+              </button>
+              <button
+                @click="addScore(-100, 2)"
+                class="answer-bttn incorrect"
+                id="incorr-3"
+              >
                 Incorrect
               </button>
             </div>
             <div class="answer-placeholder">
-              <div class="player-name">4th: Jean</div>
-              <span class="player-pholder">Answer: Crocodile</span>
-              <button class="answer-bttn correct" id="corr-4">Correct</button>
-              <button class="answer-bttn incorrect" id="incorr-4">
+              <div class="player-name">
+                4th: {{ thePlayerList[3].nickname }}
+              </div>
+              <span class="player-pholder"
+                >Answer: {{ thePlayerList[3].answer }}</span
+              >
+              <button
+                @click="addScore(100, 3)"
+                class="answer-bttn correct"
+                id="corr-4"
+              >
+                Correct
+              </button>
+              <button
+                @click="addScore(-100, 3)"
+                class="answer-bttn incorrect"
+                id="incorr-4"
+              >
                 Incorrect
               </button>
             </div>
             <div class="answer-placeholder">
-              <div class="player-name">5th: Robert</div>
-              <span class="player-pholder">Answer: Gecko</span>
-              <button class="answer-bttn correct" id="corr-5">Correct</button>
-              <button class="answer-bttn incorrect" id="incorr-5">
+              <div class="player-name">
+                5th: {{ thePlayerList[4].nickname }}
+              </div>
+              <span class="player-pholder"
+                >Answer: {{ thePlayerList[4].answer }}</span
+              >
+              <button
+                @click="addScore(100, 4)"
+                class="answer-bttn correct"
+                id="corr-5"
+              >
+                Correct
+              </button>
+              <button
+                @click="addScore(-100, 4)"
+                class="answer-bttn incorrect"
+                id="incorr-5"
+              >
                 Incorrect
               </button>
             </div>
             <div class="answer-placeholder">
-              <div class="player-name">6th: George</div>
-              <span class="player-pholder">Answer: Komodo Dragon</span>
-              <button class="answer-bttn correct" id="corr-6">Correct</button>
-              <button class="answer-bttn incorrect" id="incorr-6">
+              <div class="player-name">6th:{{ thePlayerList[5].nickname }}</div>
+              <span class="player-pholder"
+                >Answer: {{ thePlayerList[5].answer }}</span
+              >
+              <button
+                @click="addScore(100, 5)"
+                class="answer-bttn correct"
+                id="corr-6"
+              >
+                Correct
+              </button>
+              <button
+                @click="addScore(-100, 5)"
+                class="answer-bttn incorrect"
+                id="incorr-6"
+              >
                 Incorrect
               </button>
             </div>
@@ -297,6 +369,7 @@ class HostLogController extends controller {
       `setTheme`,
       `bindCurrentInformation`,
       `bindQuestions`,
+      `bindAnswerData`,
     ]);
   }
 
@@ -396,14 +469,12 @@ class HostLogController extends controller {
     this.showAnswer = false;
     this.showQuestions = true;
 
-    this.setQuestionFlag(false);
     this.clearAnswers();
-
-    // unset server question flag
-    //this.connectQuestionFlag(false);
   }
-  addScore(scorePoints) {
-    this.setScore(this.theScore + scorePoints * this.theValue);
+  addScore(scorePoints, index) {
+    let score = this.thePlayerList[index].score + scorePoints * this.theValue;
+    let scoreObj = [score, this.thePlayerList[index].nickname];
+    this.setScore(scoreObj);
   }
 }
 

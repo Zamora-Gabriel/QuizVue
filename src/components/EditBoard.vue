@@ -8,7 +8,6 @@
         <h2>Set Theme</h2>
         <form @submit.prevent="updateTheme()">
           <input type="text" id="theme-ph" name="nickname-area" />
-          <input type="submit" value="Save theme" />
         </form>
       </center>
       <div class="question-container">
@@ -173,6 +172,7 @@ class QuestEditController extends Controller {
         " ",
         " ",
         " ",
+        " ",
       ],
     };
 
@@ -205,13 +205,17 @@ class QuestEditController extends Controller {
 
     if (text == "" || text == " ") {
       alert("Please type a theme to be saved");
-      return;
+      return false;
     }
 
-    this.setTheme(text);
+    this.QuestArr[0] = text;
+    return true;
   }
 
   submitInfo() {
+    if (!this.updateTheme()) {
+      return;
+    }
     this.setQuestArr(this.QuestArr);
     alert("Questions updated");
   }

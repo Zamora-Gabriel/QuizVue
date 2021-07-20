@@ -172,8 +172,35 @@ export default ({
                     .catch(error => reject(error));
             });
         },
-        setQuestArr({ commit }, questArray) {
-            commit(`SET_CURRENT_QUESTARRAY`, questArray)
+        setQuestArr({ state, commit, rootState }, questArray) {
+            return new Promise((resolve, reject) => {
+                // rootstate to get the database from root store
+                rootState.db.collection('games').doc(`${questArray[0]}`).set({
+                        quest1: `${questArray[1]}`,
+                        quest2: `${questArray[2]}`,
+                        quest3: `${questArray[3]}`,
+                        quest4: `${questArray[4]}`,
+                        quest5: `${questArray[5]}`,
+                        quest6: `${questArray[6]}`,
+                        quest7: `${questArray[7]}`,
+                        quest8: `${questArray[8]}`,
+                        quest9: `${questArray[9]}`,
+                        quest10: `${questArray[10]}`,
+                        quest11: `${questArray[11]}`,
+                        quest12: `${questArray[12]}`,
+                        quest13: `${questArray[13]}`,
+                        quest14: `${questArray[14]}`,
+                        quest15: `${questArray[15]}`,
+                    })
+                    .then(() => {
+                        // Debug message, theme was updated on cloud
+                        console.log('Game created!')
+
+                        // resolve the promise
+                        resolve();
+                    })
+                    .catch(error => reject(error));
+            });
         },
 
         bindThemeData: firestoreAction(context => {
