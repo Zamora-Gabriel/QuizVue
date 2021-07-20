@@ -359,9 +359,6 @@ class HostLogController extends controller {
       `setScore`,
       `clearAnswers`,
       `setQuestionFlag`,
-      `setPlayerAdded`,
-      `getUser`,
-      `connectQuestionFlag`,
       `bindPlayerData`,
       `resetPlayers`,
       `bindFlagsData`,
@@ -462,8 +459,6 @@ class HostLogController extends controller {
     this.setQuestion(val);
 
     this.setQuestionFlag(true);
-
-    //this.connectQuestionFlag(true);
   }
   hideAns() {
     this.showAnswer = false;
