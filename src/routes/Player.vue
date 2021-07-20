@@ -24,9 +24,6 @@
         <h1>Score:</h1>
         <span id="score-val">{{ theUser.score }}</span>
         <br />
-        <button v-on:click="refreshFlag()" id="button-ses">
-          Refresh question
-        </button>
       </center>
     </div>
 

@@ -465,6 +465,8 @@ class HostLogController extends controller {
     this.showQuestions = true;
 
     this.clearAnswers();
+
+    this.setQuestionFlag(false);
   }
   addScore(scorePoints, index) {
     let score = this.thePlayerList[index].score + scorePoints * this.theValue;
